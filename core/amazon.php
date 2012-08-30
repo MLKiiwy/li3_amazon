@@ -374,6 +374,9 @@ class Amazon
 	}
 
 	protected static function returnItems($data) {
+		if(isset($data->Items) && isset($data->Items->Request) && isset($data->Items->Request->Errors->Error)) {
+			throw new Exception('Error during request : ' . $data->Items->Request->Errors->Error->Message);
+		}
 		if(isset($data->Items) && isset($data->Items->Item) && count($data->Items->Item) > 0) {
 			return $data->Items->Item;
 		} else {

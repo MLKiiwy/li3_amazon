@@ -23,6 +23,11 @@ class Amazon
 	const RETURN_TYPE_ARRAY	= 1;
 	const RETURN_TYPE_OBJECT = 2;
 
+	const SEARCH_INDEX_GAMES = 'VideoGames';
+	const SEARCH_INDEX_BOOKS = 'Books';
+	const SEARCH_INDEX_DVD = 'DVD';
+	const SEARCH_INDEX_MUSIC = 'Music';
+
 	/**
 	 * Is the configuration loaded
 	 *
@@ -166,6 +171,21 @@ class Amazon
 		
 		$params = self::buildRequestParams('ItemLookup', array(
 			'ItemId' => $asin,
+		));
+
+		return self::returnData(
+			self::returnItems(self::performSoapRequest("ItemLookup", $params))
+		);
+	}
+
+	public static function lookupEan($ean, $searchIndex ,$country = null)
+	{
+		if($country) {
+			self::country($country);
+		}
+		
+		$params = self::buildRequestParams('ItemLookup', array(
+			'ItemId' => $ean,'IdType' => 'EAN', 'SearchIndex' => $searchIndex, 
 		));
 
 		return self::returnData(

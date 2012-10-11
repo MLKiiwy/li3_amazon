@@ -67,6 +67,7 @@ class Amazon
 	 */
 	//protected static $webserviceWsdl = 'http://webservices.amazon.com/AWSECommerceService/AWSECommerceService.wsdl';
 	protected static $webserviceWsdl = 'http://ecs.amazonaws.com/AWSECommerceService/2009-10-01/US/AWSECommerceService.wsdl';
+	
 	/**
 	 * The SOAP Endpoint
 	 *
@@ -93,8 +94,9 @@ class Amazon
 		$defaults = array(
 			'country' => 'fr',
 			'returnType' => self::RETURN_TYPE_ARRAY,
-			'associateTag' => 'xx',
-			'responseGroup' => 'Large'
+			'associateTag' => 'senscr-21',
+			'responseGroup' => 'Large',
+			'Version' => '2011-08-01'
 		);
 
 		$data+= $defaults;
@@ -395,7 +397,18 @@ class Amazon
 
 	protected static function returnItems($data) {
 		if(isset($data->Items) && isset($data->Items->Request) && isset($data->Items->Request->Errors->Error)) {
-			throw new Exception('Error during request : ' . $data->Items->Request->Errors->Error->Message);
+			$errorLabel = null;
+			$errors = $data->Items->Request->Errors->Error;
+			if (!is_array($errors)) {
+				$errors = array($errors);
+			}
+			foreach ($errors as $i => $error) {
+				if ($errorLabel) {
+					$errorLabel .= "\t";
+				}
+				$errorLabel .= '[' . $i . '] ' . $error->Message . "\n";
+			}
+			throw new Exception('Error during request : ' . $errorLabel);
 		}
 		if(isset($data->Items) && isset($data->Items->Item) && count($data->Items->Item) > 0) {
 			return $data->Items->Item;

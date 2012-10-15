@@ -66,7 +66,8 @@ class Amazon
 	 * @var string
 	 */
 	//protected static $webserviceWsdl = 'http://webservices.amazon.com/AWSECommerceService/AWSECommerceService.wsdl';
-	protected static $webserviceWsdl = 'http://ecs.amazonaws.com/AWSECommerceService/2009-10-01/US/AWSECommerceService.wsdl';
+	//protected static $webserviceWsdl = 'http://ecs.amazonaws.com/AWSECommerceService/2009-10-01/US/AWSECommerceService.wsdl';
+	protected static $webserviceWsdl = 'http://ecs.amazonaws.com/AWSECommerceService/2011-08-01/US/AWSECommerceService.wsdl';
 	
 	/**
 	 * The SOAP Endpoint
